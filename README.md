@@ -1,71 +1,84 @@
-# multi_agent_security_project
+# Multi-Agent Security Project
 
-Project scaffold for a multi-agent security application.
+A multi-agent AI system built with LangChain and Groq, featuring input/output security checks, task planning, and specialized worker agents for research tasks.
+
+## Architecture
+
+    User Input
+        |
+        v
+    InputSecurityAgent       -> Validates and sanitizes input
+        |  (if safe)
+        v
+    HeadAgent                -> create_plan() + route_task()
+        |
+        v
+    ResearchAgent            -> Executes the task via Groq LLM
+    (or other workers)
+        |
+        v
+    OutputSecurityAgent      -> Validates output before returning
+        |  (if safe)
+        v
+    Final Result
+
+## Project Structure
+
+    multi_agent_security_project/
+        src/
+            agents/
+                head_agent.py        - Orchestration: planning + routing
+                worker_agents.py     - Task-executing agents (e.g. ResearchAgent)
+                security_agents.py   - Input/output security checks
+            workflows/
+                basic_workflow.py    - End-to-end workflow orchestration
+            config.py                - Environment and API key configuration
+            main.py                  - Entry point
+        .env                          - API keys (not committed)
+        .env.example                  - Template for environment variables
+        .gitignore
+        README.md
 
 ## Setup
 
-1. In the terminal, ensure you’re in the project root:
-   ```bash
-   cd path/to/multi_agent_security_project
-   ```
-2. Create a virtual environment:
-   ```bash
-   python -m venv .venv
-   ```
-3. Activate it:
-   - On Windows:
-     ```bash
-     .venv\Scripts\activate
-     ```
-   - On macOS/Linux:
-     ```bash
-     source .venv/bin/activate
-     ```
-4. In VS Code, select this interpreter:
-   - Open Command Palette: `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
-   - Type: `Python: Select Interpreter`
-   - Choose the one that points to `.venv` inside your project.
-5. Install dependencies in the same activated terminal:
-   ```bash
-   pip install -r requirements.txt
-   ```
-6. Configure environment variables
-   - Copy `.env.example` → `.env`
-   - Update values in `.env`.
+1. Clone the repository
 
-   **Note:** The app reads `OPENAI_API_KEY` and optionally `OPENAI_MODEL` from environment variables (via `src/config.py`).
+       git clone https://github.com/hashmi9890/multi_agent-security.git
+       cd multi_agent-security
 
-   Example `.env` contents:
-   ```text
-   OPENAI_API_KEY=sk-...your_real_key...
-   OPENAI_MODEL=gpt-4.1-mini
-   ```
+2. Create and activate a virtual environment
 
-`python-dotenv` in `src/config.py` will automatically load `.env` when the app runs.
+       python -m venv .venv
+       source .venv/Scripts/activate
 
-## Structure
+3. Install dependencies
 
-- `docs/` - project documentation
-- `src/` - application source code
-- `src/agents/` - agent implementations
-- `src/workflows/` - workflow definitions
+       pip install -r requirements.txt
 
-## ▶️ Run Application (see real output)
+4. Configure environment variables
+   Copy .env.example to .env and add your GROQ_API_KEY (get one at https://console.groq.com/keys)
 
-Run from the project root:
+## Usage
 
-```bash
-python -m src.main
-```
+Run the workflow
 
-You should see console output. If the OpenAI key is missing/invalid, you’ll get an API authentication error (401).
+    python -m src.main
 
-## What the workflow does
+## Security Features
 
-`src/workflows/basic_workflow.py` implements:
-1. **InputSecurityAgent**: LLM-based classifier that returns SAFE/UNSAFE.
-2. **HeadAgent**: routes to the correct worker.
-3. **ResearchAgent**: produces the response.
-4. **OutputSecurityAgent**: checks the worker output for secrets/harmful content.
+- Input validation: all user input is checked by InputSecurityAgent before processing
+- Output validation: all agent output is checked by OutputSecurityAgent before being returned to the user
+- Environment isolation: API keys are stored in .env, excluded from version control via .gitignore
 
+## Branching Strategy
 
+- main: stable, production-ready code
+- dev: active development branch
+- feature/*: individual feature branches, merged into dev when complete
+
+## Tech Stack
+
+- Python 3.14
+- LangChain (langchain_openai / Groq integration)
+- Groq API for LLM inference
+- Git and GitHub for version control
