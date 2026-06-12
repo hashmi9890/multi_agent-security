@@ -1,0 +1,5 @@
+# Add your Python dependencies here
+# Example:
+# fastapi==0.104.0
+# uvicorn==0.25.0
+# pydantic==2.10.11
