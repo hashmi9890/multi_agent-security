@@ -56,7 +56,7 @@ A multi-agent AI system built with LangChain and Groq, featuring input/output se
        pip install -r requirements.txt
 
 4. Configure environment variables
-   Copy .env.example to .env and add your GROQ_API_KEY (get one at https://console.groq.com/keys)
+   Copy .env.example to .env and add your GROQ_API_KEY (get one at https://console groq.com/keys)
 
 ## Usage
 
