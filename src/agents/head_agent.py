@@ -1,6 +1,14 @@
 """Head agent orchestration logic."""
 
 
+CODE_KEYWORDS = [
+    "code", "function", "bug", "error", "debug", "exception",
+    "traceback", "script", "python", "javascript", "java", "c++",
+    "syntax", "compile", "class ", "def ", "import ", "variable",
+    "algorithm", "refactor", "fix this", "write a program",
+]
+
+
 class HeadAgent:
     def __init__(self, name: str) -> None:
         self.name = name
@@ -16,8 +24,15 @@ class HeadAgent:
         }
 
     def route_task(self, user_input: str) -> dict:
-        """Decide which worker should handle this task."""
+        """Decide which worker should handle this task based on keywords."""
+        lowered = user_input.lower()
+
+        if any(keyword in lowered for keyword in CODE_KEYWORDS):
+            worker_type = "code"
+        else:
+            worker_type = "research"
+
         return {
-            "worker_type": "research",
+            "worker_type": worker_type,
             "task_description": user_input,
         }

@@ -2,7 +2,7 @@ from src.workflows.basic_workflow import run_research_workflow
 
 
 def main():
-    user_query = "Research 3 competitors for an AI writing tool and summarize them."
+    user_query = "Write a Python function to check if a number is prime"
     result = run_research_workflow(user_query)
     print("=== WORKFLOW RESULT ===")
     print(result)

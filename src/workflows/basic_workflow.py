@@ -1,5 +1,5 @@
 from src.agents.head_agent import HeadAgent
-from src.agents.worker_agents import ResearchAgent
+from src.agents.worker_agents import ResearchAgent, CodeAgent
 from src.agents.security_agents import InputSecurityAgent, OutputSecurityAgent
 
 
@@ -8,7 +8,7 @@ def run_research_workflow(user_input: str) -> str:
     Basic end-to-end workflow for testing:
     1. Input security check
     2. Head agent planning + routing
-    3. Research worker execution
+    3. Worker execution (research or code)
     4. Output security check
     """
 
@@ -23,12 +23,14 @@ def run_research_workflow(user_input: str) -> str:
     plan = head.create_plan(user_input)
     route_info = head.route_task(user_input)
 
-    # For now, only "research" worker type exists
     worker_type = route_info.get("worker_type")
     task_description = route_info.get("task_description", user_input)
 
     if worker_type == "research":
         worker = ResearchAgent()
+        worker_output = worker.run(task_description)
+    elif worker_type == "code":
+        worker = CodeAgent()
         worker_output = worker.run(task_description)
     else:
         return f"Unknown worker type: {worker_type}"
