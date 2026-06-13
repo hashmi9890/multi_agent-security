@@ -52,3 +52,49 @@ Be precise and avoid unnecessary explanation.
 """
         resp = self.llm.invoke(prompt)
         return resp.content.strip()
+
+
+class DataAnalysisAgent:
+    """
+    Senior-level data analysis agent.
+    Given raw data or a dataset description, returns a structured,
+    business-oriented analysis: statistics, insights, risks, and
+    actionable recommendations -- written like a report a data analyst
+    would hand to a business stakeholder.
+    """
+
+    def __init__(self):
+        self.llm = get_llm()
+
+    def run(self, task_description: str) -> str:
+        prompt = f"""You are a senior data analyst producing a concise business report.
+
+Data / Task:
+{task_description}
+
+Structure your response with these sections, using clear headers:
+
+1. Key Metrics
+   - Compute relevant statistics where possible (total, average, min, max,
+     growth rate, variance). State any assumptions if data is incomplete.
+
+2. Insights
+   - 3-5 bullet points on patterns, trends, or anomalies in the data.
+
+3. Business Implications
+   - What do these numbers mean for the business? Frame in terms of
+     opportunities, risks, or areas needing attention.
+
+4. Recommendations
+   - 2-3 concrete, actionable next steps a decision-maker could take.
+
+Guidelines:
+- Be precise, evidence-based, and avoid overstating confidence beyond
+  what the data supports.
+- Keep the entire response concise -- this is a summary report, not a
+  full thesis. Avoid jargon where plain language works.
+- Do not fabricate data points that were not provided or cannot be
+  reasonably derived.
+"""
+        resp = self.llm.invoke(prompt)
+        return resp.content.strip()

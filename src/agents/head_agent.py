@@ -8,6 +8,12 @@ CODE_KEYWORDS = [
     "algorithm", "refactor", "fix this", "write a program",
 ]
 
+DATA_KEYWORDS = [
+    "csv", "dataset", "data analysis", "average", "mean", "median",
+    "statistics", "stats", "trend", "correlation", "spreadsheet",
+    "rows", "columns", "table", "sum of", "total sales", "analyze this data",
+]
+
 
 class HeadAgent:
     def __init__(self, name: str) -> None:
@@ -27,7 +33,9 @@ class HeadAgent:
         """Decide which worker should handle this task based on keywords."""
         lowered = user_input.lower()
 
-        if any(keyword in lowered for keyword in CODE_KEYWORDS):
+        if any(keyword in lowered for keyword in DATA_KEYWORDS):
+            worker_type = "data_analysis"
+        elif any(keyword in lowered for keyword in CODE_KEYWORDS):
             worker_type = "code"
         else:
             worker_type = "research"
